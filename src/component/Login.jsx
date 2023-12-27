@@ -3,16 +3,26 @@ import { Grid, Box, TextField, Button, InputAdornment, SvgIcon } from '@mui/mate
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import loginImage from "../images/loginLogo.png";
+import LoginHeader from './LoginHeader';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
+
 import "../styles/login.css";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
+
+  const handleLogin = async (e) => {
+    setLoading(true);
+    e.preventDefault();
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
+      const response = await fetch('https://res2e4sb2oz6ta7mlagcaelvlm0mpadg.lambda-url.us-west-1.on.aws/account/login', {
+        method: 'PUT',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -20,13 +30,17 @@ const Login = () => {
       });
 
       if (response.ok) {
+        navigate("/home")
         // Successful login, handle the response accordingly
         console.log('Login successful');
       } else {
-        // Handle login failure
+        setLoading(false);
+        alert("Invalid credentials please check!")
         console.error('Login failed');
       }
     } catch (error) {
+    
+
       console.error('Error during login:', error);
     }
   };
@@ -35,7 +49,9 @@ const Login = () => {
   const isLoginDisabled = !email || !password;
 
   return (
-    <div>
+    
+    <>
+        <LoginHeader/>
       <Grid container style={{ marginTop: "12px", marginRight: "40px" }}>
         {/* First Part */}
         <Grid item xs={12} md={6}>
@@ -100,7 +116,7 @@ const Login = () => {
                 style={{ marginTop: "10px" }}
                 disabled={isLoginDisabled}
               >
-                Login
+                 {loading ? < CircularProgress  style = {{color:"white"}} />  : 'Login'}
               </Button>
 
               <p style={{ textAlign: "center", marginTop: "10px", fontWeight: "normal" }}>
@@ -110,7 +126,7 @@ const Login = () => {
           </Box>
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 };
 
