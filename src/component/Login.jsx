@@ -15,36 +15,23 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login: authenticate } = useAuth();
 
 
   const handleLogin = async (e) => {
-    setLoading(true);
     e.preventDefault();
-    try {
-      const response = await fetch('https://res2e4sb2oz6ta7mlagcaelvlm0mpadg.lambda-url.us-west-1.on.aws/account/login', {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+    setLoading(true);
 
-      if (response.ok) {
-        login()
-        navigate("/")
-        // Successful login, handle the response accordingly
-        console.log('Login successful');
-      } else {
-        setLoading(false);
-        alert("Invalid credentials please check!")
-        console.error('Login failed');
-      }
-    } catch (error) {
-    
+    const success = await authenticate(email, password);
 
-      console.error('Error during login:', error);
+    if (success) {
+      // Redirect to the home page or any other page after successful login
+      navigate("/");
+      console.log('Login successful');
+    } else {
+      setLoading(false);
+      alert("Invalid credentials. Please check!");
+      console.error('Login failed');
     }
   };
 
