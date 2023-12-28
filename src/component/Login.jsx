@@ -6,6 +6,7 @@ import loginImage from "../images/loginLogo.png";
 import LoginHeader from './LoginHeader';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
+import { useAuth} from "../context/AuthContext";
 
 import "../styles/login.css";
 
@@ -14,6 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
 
   const handleLogin = async (e) => {
@@ -30,7 +32,8 @@ const Login = () => {
       });
 
       if (response.ok) {
-        navigate("/home")
+        login()
+        navigate("/")
         // Successful login, handle the response accordingly
         console.log('Login successful');
       } else {
