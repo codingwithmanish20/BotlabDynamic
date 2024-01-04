@@ -1,8 +1,8 @@
-.rightside_bar{
+.toggle_bar{
     position: relative;
-    top:20px;
-    width:20%;
+    top:0px;
+    width:15%;
     height:100vh;
-    background-color: red;
+    background-color:black
    
 }

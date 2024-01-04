@@ -25,13 +25,10 @@ const Login = () => {
     const success = await authenticate(email, password);
 
     if (success) {
-      // Redirect to the home page or any other page after successful login
       navigate("/");
-      console.log('Login successful');
     } else {
       setLoading(false);
       alert("Invalid credentials. Please check!");
-      console.error('Login failed');
     }
   };
 
